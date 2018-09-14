@@ -51,6 +51,7 @@ tinc:
     {%- if short_name == hostname %}
 /etc/tinc/{{ netname }}/tinc.conf:
   file.managed:
+    - makedirs: true
     - mode: 755
     - user: root
     - group: root
