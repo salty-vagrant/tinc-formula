@@ -21,7 +21,7 @@ tinc:
     - mode: 755
     - user: root
     - group: root
-    - replace: false
+    - template: 'jinja'
     - source: salt://tinc/files/nets.boot
 
 {% for netname, network in pillar.get('tinc', {}).items() %}
