@@ -61,7 +61,7 @@ service-for-{{ netname }}:
       host_config: {{ host.get('host_config', {})|json }}
       RSAPublicKey: {{ host.get('RSAPublicKey')|json }}
     - require:
-      - file: /etc/tinc/{{ netname }}/hosts.
+      - file: /etc/tinc/{{ netname }}/hosts/
 
     {%- set short_name = grains['id'].split('.') | first %}
 
