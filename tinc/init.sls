@@ -7,6 +7,8 @@ tinc:
     - name: tinc
     - enable: True
 
+{%- set short_name = grains['id'].split('.') | first %}
+
 {% if grains['os_family'] == 'RedHat' %}
 /etc/init.d/tinc:
   file.managed:
@@ -36,6 +38,12 @@ service-for-{{ netname }}:
     - onchanges:
       - file: /etc/tinc/{{ netname }}/tinc.conf
       - file: /etc/tinc/{{ netname }}/rsa_key.priv
+      {%- if salt['pillar.get']('tinc:'+ netname +':'+ short_name +':tinc_up', {}) is defined %}
+      - file: /etc/tinc/{{ netname }}/tinc-up
+      {%- endif %}
+      {%- if salt['pillar.get']('tinc:'+ netname +':'+ short_name +':tinc_down', {}) is defined %}
+      - file: /etc/tinc/{{ netname }}/tinc-down
+      {%- endif %}
   {%- for hostname, host in network.items() %}
       - file: /etc/tinc/{{ netname }}/hosts/{{ hostname }}
   {%- endfor %}
@@ -62,8 +70,6 @@ service-for-{{ netname }}:
       RSAPublicKey: {{ host.get('RSAPublicKey')|json }}
     - require:
       - file: /etc/tinc/{{ netname }}/hosts/
-
-    {%- set short_name = grains['id'].split('.') | first %}
 
     {%- if short_name == hostname %}
 /etc/tinc/{{ netname }}/tinc.conf:
