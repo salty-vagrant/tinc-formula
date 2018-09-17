@@ -25,6 +25,12 @@ tinc:
     - source: salt://tinc/files/nets.boot
 
 {% for netname, network in pillar.get('tinc', {}).items() %}
+{%- if salt['file.file_exists']('/lib/systemd/system/tinc@.service') %}
+  service-for-{{ netname }}:
+    service.running:
+      - name: tinc@{{ netname }}
+      - enable: True
+{%- endif %}
 
 /etc/tinc/{{ netname }}/hosts/:
   file.directory:
