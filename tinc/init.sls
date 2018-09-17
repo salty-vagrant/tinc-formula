@@ -37,7 +37,7 @@ service-for-{{ netname }}:
       - file: /etc/tinc/{{ netname }}/tinc.conf
       - file: /etc/tinc/{{ netname }}/rsa_key.priv
   {%- for hostname, host in network.items() %}
-      - file: /etc/tinc/{{ netname }}/hosts/{{ hostname }}:
+      - file: /etc/tinc/{{ netname }}/hosts/{{ hostname }}
   {%- endfor %}
 
 
