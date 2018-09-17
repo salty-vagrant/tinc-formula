@@ -35,7 +35,10 @@ service-for-{{ netname }}:
       - test -f /lib/systemd/system/tinc@.service
     - onchanges:
       - file: /etc/tinc/{{ netname }}/tinc.conf
-      - file: /etc/tinc/{{ netname }}/hosts/
+      - file: /etc/tinc/{{ netname }}/rsa_key.priv
+  {%- for hostname, host in network.items() %}
+      - file: /etc/tinc/{{ netname }}/hosts/{{ hostname }}:
+  {%- endfor %}
 
 
 /etc/tinc/{{ netname }}/hosts/:
