@@ -33,6 +33,9 @@ service-for-{{ netname }}:
       - pkg: tinc
     - onlyif:
       - test -f /lib/systemd/system/tinc@.service
+    - onchanges:
+      - file: /etc/tinc/{{ netname }}/tinc.conf
+      - file: /etc/tinc/{{ netname }}/hosts/
 
 
 /etc/tinc/{{ netname }}/hosts/:
